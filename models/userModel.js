@@ -3,53 +3,60 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
-const userSchema = new mongoose.Schema({
-  logInName: {
-    type: String,
-    required: [true, "Prašom nurodyti vardą"],
-  },
-  email: {
-    type: String,
-    required: [true, "Prašom nurodyti email"],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, "Prašome nurodyti galiojantį email"],
-  },
-  role: {
-    type: String,
-    enum: ["ieškau darbo", "siūlau darba"],
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 8,
-    select: false, // Butinai select: false, kad nesiustume response su PW
-  },
-  passwordConfirm: {
-    type: String,
-    required: [true, "Prašome patvirtinti slaptažodį"],
-    validate: {
-      // veikia tik ant create ir save, ne update
-      validator: function (el) {
-        return el === this.password;
-      },
-      message: "Slaptažodžiai nesutampa",
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Prašom nurodyti vardą"],
     },
-  },
+    email: {
+      type: String,
+      required: [true, "Prašom nurodyti email"],
+      unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, "Prašome nurodyti galiojantį email"],
+    },
+    role: {
+      type: String,
+      required: [true, "pasirinkite ar ieškote darbo ar siūlote darbą"],
+      enum: ["ieškau darbo", "siūlau darba"],
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: [8, "Slaptažodį turi sudaryti bent 8 simboliai"],
+      select: false, // Butinai select: false, kad nesiustume response su PW
+    },
+    passwordConfirm: {
+      type: String,
+      required: [true, "Prašome patvirtinti slaptažodį"],
+      validate: {
+        // veikia tik ant create ir save, ne update
+        validator: function (el) {
+          return el === this.password;
+        },
+        message: "Slaptažodžiai nesutampa",
+      },
+    },
 
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
+    // imone: {
+    //   type: mongoose.Schema.ObjectId,
+    //   ref: "Darbdavio",
+    // },
   },
-  // imone: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: "Darbdavio",
-  // },
-});
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();

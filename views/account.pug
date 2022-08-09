@@ -1,0 +1,87 @@
+extends base
+//- Jei active klase = true, tai prideti sita klase, jei ne, nieko neprideti 
+mixin navItem(link, text, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      | #{ text }
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('#', 'Nustatymai', true)
+          - if (user.role === 'admin siūlau darba')
+            +navItem('/darbdavioInfo', 'Darbdavio informacija')
+
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('#', 'Users')
+              +navItem('#', 'Trinti skelbima')
+              +navItem('#', 'Trinti useri')
+
+        - if (user.role === 'siūlau darba')
+          .admin-nav
+            h5.admin-nav__heading Darbdavio
+            ul.side-nav
+              +navItem('/sukurtiSkelbima', 'Sukurti skelbima')
+              +navItem('/manoSkelbimai', 'Mano skelbimai')
+
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Jūsų paskyros nustatymai
+          // without api
+          //- form.form.form-user-data(action='/submit-user-data', method='POST')
+          form.form.form-user-data
+            .form__group
+              label.form__label(for='name') Vardas
+              input#name.form__input(
+                type='text',
+                value=`${user.name}`,
+                required,
+                name='name'
+              )
+            .form__group.ma-bt-md
+              label.form__label(for='email') Email 
+              input#email.form__input(
+                type='email',
+                value=`${user.email}`,
+                required,
+                name='email'
+              )
+           
+            .form__group.right
+              button.btn.btn--small.btn--green Save settings
+
+        .line &nbsp;
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Keisti slaptažodį
+          form.form.form-user-settings
+            .form__group
+              label.form__label(for='password-current') Dabartinis slaptažodis
+              input#password-current.form__input(
+                type='password',
+                placeholder='••••••••',
+                required,
+                minlength='8'
+              )
+            .form__group
+              label.form__label(for='password') Naujas slaptažodis
+              input#password.form__input(
+                type='password',
+                placeholder='••••••••',
+                required,
+                minlength='8'
+              )
+            .form__group.ma-bt-lg
+              label.form__label(for='password-confirm') Pakartoti nauja slaptažodi
+              input#password-confirm.form__input(
+                type='password',
+                placeholder='••••••••',
+                required,
+                minlength='8'
+              )
+            .form__group.right
+              button.btn.btn--small.btn--green Išsaugoti slaptažodi 

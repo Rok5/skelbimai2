@@ -26,6 +26,7 @@ exports.darbdavioInfo = catchAsync(async (req, res, next) => {
       kontaktinisAsmuo: req.body.kontaktinisAsmuo,
       user: req.body.user,
     });
+
     res.status(201).json({
       status: "success",
       data: {
@@ -48,7 +49,7 @@ exports.visiDarbdaviai = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    Skelbimai: doc,
+    DarbdaviuInfo: doc,
   });
 });
 

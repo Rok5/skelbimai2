@@ -42,6 +42,7 @@ class APIFeatures {
     );
     // console.log(queryStr);
     this.query = this.query.find(JSON.parse(queryStr));
+
     // jei this.query.find tuscias, tai bus nusiusti visi rezultatai
     return this;
   }
@@ -90,4 +91,5 @@ class APIFeatures {
     return this;
   }
 }
+
 module.exports = APIFeatures;

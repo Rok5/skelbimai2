@@ -23,7 +23,7 @@ exports.visiUseriai = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    Skelbimai: doc,
+    Vartotojai: doc,
   });
 });
 
@@ -63,7 +63,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
       new AppError(`You can change password here: ${"/updatePassword"}`, 400)
     );
   }
-  const filteredBody = filterObj(req.body, "logInName", "email");
+  const filteredBody = filterObj(req.body, "name", "email");
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,

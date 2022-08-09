@@ -9,8 +9,17 @@ router
   .post(authController.protect, skelbimuController.sukurtiSkelbima);
 
 router
+  .route("/manoSkelbimai")
+  .get(
+    authController.isLogedIn,
+    authController.protect,
+    authController.restrictTo("siūlau darba", "admin"),
+    skelbimuController.manoSkelbimai
+  );
+
+router
   .route("/:id")
-  .get(authController.protect, skelbimuController.gautiSkelbima)
+  .get(skelbimuController.gautiSkelbima)
   .patch(
     authController.protect,
     authController.protectDoc,
@@ -27,5 +36,11 @@ router
 // router
 //   .route("/:skelbimoId/darbdaviai/:id")
 //   .get(authController.protect, darbdavioController.gautiDarbdavi);
+
+// Search
+// router.get("/search", (req, res) => {
+//   const { raktinisZodis } = req.query;
+//   Skelbimai.findAll({ where: { pavadinimas: {} } });
+// });
 
 module.exports = router;

@@ -10,8 +10,9 @@ exports.visiSkelbimai = catchAsync(async (req, res, next) => {
     .sort()
     .limitFields()
     .paginate();
+
   // const doc = await features.query.explain();
-  const doc = await features.query;
+  const doc = await features.query.populate("imonesInfo");
 
   res.status(201).json({
     status: "success",
@@ -75,6 +76,7 @@ exports.deleteSkelbima = catchAsync(async (req, res, next) => {
 
 exports.sukurtiSkelbima = catchAsync(async (req, res, next) => {
   const imonesInfo = await Darbdavio.findOne({ user: req.user.id });
+
   if (!imonesInfo) {
     return next(
       new AppError(
@@ -82,13 +84,25 @@ exports.sukurtiSkelbima = catchAsync(async (req, res, next) => {
       )
     );
   }
-  console.log(imonesInfo);
+
   if (!req.body.imonesInfo) req.body.imonesInfo = imonesInfo;
+  req.body.user = req.user.id;
   const sukurtiSkelbima = await Skelbimai.create(req.body);
+
   res.status(201).json({
     status: "success",
     data: {
       skelbimas: sukurtiSkelbima,
+    },
+  });
+});
+
+exports.manoSkelbimai = catchAsync(async (req, res, next) => {
+  const docs = await Skelbimai.find({ user: req.user.id });
+  res.status(201).json({
+    status: "success",
+    data: {
+      skelbimai: docs,
     },
   });
 });

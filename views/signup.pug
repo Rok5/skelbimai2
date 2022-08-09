@@ -1,0 +1,30 @@
+extends base 
+
+block content 
+  main.main
+        form.formSignup
+          .containerSignup
+            .skiltis
+              h2.heading-secondary.ma-bt-lg Registracija
+            .skiltis
+              label  Vardas: 
+              input.inputSignup#name(type='text' name='firstname' size='15')
+            .skiltis
+              label Siūlote ar ieškote darbo? :
+              select.inputSignup#role
+                option(value='Role') 
+                option(value='ieškau darbo') Ie&scaron;kau darbo
+                option(value='siūlau darba') Si&umacr;lau darba
+            .skiltis
+              label Email:  
+                input.inputSignup#email(type='email' name='email')
+            .skiltis
+              label Slapta&zcaron;odis:  
+                input.inputSignup#pass(type='Password' name='pass')
+            .skiltis
+              label Pakartoti-Slapta&zcaron;od&iogon; :  
+                input.inputSignup#repass(type='Password' name='repass')
+            .skiltis
+                button.btnSignup.btn.btn--green Registruotis
+
+

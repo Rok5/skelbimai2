@@ -1,0 +1,17 @@
+extends base
+
+block content 
+  main.main
+    
+ 
+    span#pavadinimas= skelbimas.pavadinimas
+    //- span#info= skelbimas.imonesInfo
+    span= skelbimas.user
+    br
+    br
+
+    //- #skelbimas= skelbimas.id
+    //-   button.trintiSkelbima(type='submit' value='Submit') Trinti 
+    - if (currentUserId===skelbimas.user)
+      #skelbimas= skelbimas.id
+      button.trintiSkelbima(type='submit' value='Submit') Trinti 

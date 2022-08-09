@@ -1,0 +1,26 @@
+extends base 
+
+block content 
+  form.imonesInfoForma
+    label(for='imonesPavadinimas') Įmonės pavadinimas:
+    br
+    input#imonesPavadinimas(type='text' name='imonesPavadinimas' value=val,)
+    br
+    label(for='imonesKodas') Įmonės kodas:
+    br
+    input#imonesKodas(type='number' name='imonesKodas')
+    br
+    label(for='kontaktinisAsmuo') Kontaktinis Asmuo:
+    br
+    input#kontaktinisAsmuo(type='text' name='kontaktinisAsmuo')
+    br
+    br
+    input(type='submit' value='Submit')
+
+  - if (darbdavioInfo !=null)
+      h1= darbdavioInfo.imonesPav
+      h1= darbdavioInfo.imonesKodas
+      h1= darbdavioInfo.kontaktinisAsmuo
+     
+
+     

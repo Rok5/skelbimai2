@@ -40,7 +40,7 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
-    logInName: req.body.logInName,
+    name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
@@ -69,6 +69,16 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: "success",
+  });
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
   // Protect esme paziureti ar useris prisijumges. Tai darom tikrindami jwt tokena,
   // kuri issiuntem login arba signup metu.
@@ -85,6 +95,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
   if (!token) {
     return next(new AppError("Jūs esate neprisijungęs", 401));
@@ -109,8 +121,42 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   req.user = freshUser;
+  res.locals.user = freshUser;
   next();
 });
+
+exports.isLogedIn = async (req, res, next) => {
+  // 1) gauti tokena ar jis egzistuoja
+  if (req.cookies.jwt) {
+    try {
+      // 2) tokeno verifikacija, ar nepakites
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // 3) paziureti ar useris dar egzistuoja
+
+      const freshUser = await User.findById(decoded.id);
+
+      // decoded susideda is id ir secret word, del to per decoded galim prieiti prie id
+      if (!freshUser) {
+        next();
+      }
+      // 4) paiureti ar useris keite pw, po to kai buvo isduotas tokenas
+      if (freshUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // Loged in user
+      res.locals.user = freshUser;
+      return next();
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+};
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
@@ -194,9 +240,9 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 2) paziureti ar ivestas pw teisingas
   if (
     !user ||
-    (await !user.correctPassword(req.body.currentPassword, user.password))
+    !(await user.correctPassword(req.body.currentPassword, user.password))
   ) {
-    return next(new AppError("Neteisingas slaptažodis"));
+    return next(new AppError("Neteisingas slaptažodis"), 401);
   }
   // 3) jei pw teisingas, updatinti pw
   user.password = req.body.password;
@@ -210,26 +256,12 @@ exports.protectDoc = catchAsync(async (req, res, next) => {
   // Ar trina skelbima tas useris kuris ji ir sukure
   const skelbimas = await Skelbimai.find({ _id: req.params.id });
   // console.log("skelbimas", skelbimas);
-  const darbdavioInfoIdIsSkelbimo = skelbimas[0].imonesInfo[0];
-  // console.log(darbdavioInfoIdIsSkelbimo);
-  const darbdavioInfoIdIsSkelbimoToString = JSON.stringify(
-    darbdavioInfoIdIsSkelbimo
-  ).replace(/['"]+/g, "");
-  console.log(darbdavioInfoIdIsSkelbimoToString);
+  const userIdIsSkelbimo = skelbimas[0].user;
+  // console.log(userIdIsSkelbimo, "user id is skelbimo");
 
-  const skelbimaPatalpinusiosImonesInfo = await Darbdavio.find({
-    _id: darbdavioInfoIdIsSkelbimoToString,
-  }).select("+user");
-  console.log("darbdavioInfo", skelbimaPatalpinusiosImonesInfo);
+  // console.log(req.user.id, "user id");
 
-  const userioPatalpinusioSkelbimaIdIsImonesInfo = JSON.stringify(
-    skelbimaPatalpinusiosImonesInfo[0].user
-  ).replace(/['"]+/g, "");
-  console.log(userioPatalpinusioSkelbimaIdIsImonesInfo);
-
-  console.log(req.user.id);
-
-  if (userioPatalpinusioSkelbimaIdIsImonesInfo !== req.user.id) {
+  if (userIdIsSkelbimo !== req.user.id) {
     return next(
       new AppError("Negalite atlikti veiksmų ne su savo skelbimu"),
       400

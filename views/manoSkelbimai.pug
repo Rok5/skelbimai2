@@ -1,0 +1,16 @@
+extends base 
+
+block content 
+  main.main
+    .container 
+    each skelbimas in skelbimai
+      a.eiti-i-skelbima(href=`/manoSkelbimai/${skelbimas.id}`)
+        .flex-grid
+          .col= skelbimas.pavadinimas
+          .col= skelbimas.imone
+          .col= `${skelbimas.atlyginimas} €`
+          .col= skelbimas.miestas
+          .col= skelbimas.createdAt
+      
+          
+      

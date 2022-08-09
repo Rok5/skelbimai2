@@ -24,27 +24,49 @@ const handleTokenExpiredError = (err) => {
   return new AppError("Prašome prisijungti iš naujo", 401);
 };
 
-const sendErrorDev = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack,
-  });
-};
-
-const sendErrorProd = (err, res) => {
-  if (err.isOperational) {
+const sendErrorDev = (err, req, res) => {
+  if (req.originalUrl.startsWith("/api")) {
     res.status(err.statusCode).json({
       status: err.status,
+      error: err,
       message: err.message,
+      stack: err.stack,
     });
   } else {
-    console.error("ERROR", err);
-    res.status(500).json({
-      status: "error",
-      message: "Įvyko nenumatyta klaida",
+    res.status(err.statusCode).render("error", {
+      title: "Įvyko klaida",
+      msg: err.message,
     });
+  }
+};
+
+const sendErrorProd = (err, req, res) => {
+  if (req.originalUrl.startsWith("/api")) {
+    if (err.isOperational) {
+      res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message,
+      });
+    } else {
+      console.error("ERROR", err);
+      res.status(500).json({
+        status: "error",
+        message: "Įvyko nenumatyta klaida",
+      });
+    }
+  } else {
+    if (err.isOperational) {
+      res.status(err.statusCode).render("error", {
+        title: "Įvyko nenumatyta klaida",
+        msg: err.message,
+      });
+    } else {
+      console.error("ERROR", err);
+      res.status(err.statusCode).render("error", {
+        title: "Įvyko nenumatyta klaida",
+        msg: "Prašome bandyti vėliau",
+      });
+    }
   }
 };
 
@@ -53,9 +75,9 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || "error";
 
   if (process.env.NODE_ENV === "development") {
-    sendErrorDev(err, res);
+    sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === "production") {
-    let error = { ...err };
+    let error = Object.create(err);
     error.name = err.name;
     error.message = err.message;
     if (err.name === "CastError") {
@@ -74,6 +96,6 @@ module.exports = (err, req, res, next) => {
     if (err.name === "TokenExpiredError") {
       error = handleTokenExpiredError(error);
     }
-    sendErrorProd(error, res);
+    sendErrorProd(error, req, res);
   }
 };
