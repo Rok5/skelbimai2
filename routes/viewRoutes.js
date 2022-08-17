@@ -1,6 +1,8 @@
 const express = require("express");
 const viewsController = require("../controller/viewsController");
 const authController = require("../controller/authController");
+const darbdavioController = require("../controller/darbdavioController");
+const skelbimuController = require("../controller/skelbimuController");
 
 const router = express.Router();
 
@@ -50,6 +52,20 @@ router
     viewsController.darbdavioInfo
   );
 
-router.get("/search", viewsController.filtruotiSkelbimai);
+router
+  .route("/updateDarbdavi")
+  .get(
+    authController.protect,
+    authController.restrictTo("siūlau darba", "admin"),
+    viewsController.updateDarbdavi
+  );
+
+router.get(
+  "/darbdavys/:imonesId/",
+  viewsController.gautiDarbdaviPerSkelbimaViews
+);
+
+router.get("/forgotPassword", viewsController.forgotPassword);
+router.get("/resetPassword/:token", viewsController.resetPassword);
 
 module.exports = router;

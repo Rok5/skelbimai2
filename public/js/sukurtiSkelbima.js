@@ -3,22 +3,32 @@ import axios from "axios";
 import { showAlert } from "./alert";
 
 export const sukurtiSkelbima = async (
-  skelbimoPavadinimas,
+  pareiguPavadinimas,
   imonesPavadinimas,
   atlyginimas,
   miestas,
-  darboSritis
+  darboSritis,
+  reikalavimaiDarbuotojui,
+  imoneSiulo,
+  informacijaApieImone,
+  darboPobudis,
+  atlyginimoTipas
 ) => {
   try {
     const res = await axios({
       method: "POST",
       url: "http://127.0.0.1:8000/api/v1/skelbimai",
       data: {
-        pavadinimas: skelbimoPavadinimas,
+        pareiguPavadinimas,
         imone: imonesPavadinimas,
         atlyginimas,
         miestas,
         darboSritis,
+        reikalavimaiDarbuotojui,
+        imoneSiulo,
+        informacijaApieImone,
+        darboPobudis,
+        atlyginimoTipas,
       },
     });
     if (res.data.status === "success") {

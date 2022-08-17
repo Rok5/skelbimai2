@@ -3,12 +3,138 @@ html
   head 
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
-    link(rel='stylesheet' href='/css/style.css')
+    //- link(rel='stylesheet' href='/css/style.css')
     link(rel='shortcut icon' type='/image/png' href='img/favicon.png')
     link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
-    title Skelbimai | #{title}
+    //- link(rel='stylesheet' href='node_modules/bootstrap/dist/css/bootstrap.css')
+    style
+             include ../node_modules/bootstrap/dist/css/bootstrap.css
+    style(type='text/css').
+        .navbar{
+          padding-left: 15px;
+          border-bottom: 1px solid #A9A9A9;
+        }
+        .paieskosForma {
+          padding-left: 25px
+        }
+        .filtruotiMygtukas {
+            position: relative;
+            align-items: flex-end;
+            padding-top: 20px;
+        }
+        .my-row{
+          margin-top: 20px;
 
+        }
+        .fixOverflow {
+          //- word-wrap: break-word;
+          //- width: 4fr 3fr 2fr 1fr;
+        }
+        .pareiguPavadinimas{
+          text-transform: uppercase;
+          color: red;
+          font-size: 18px;
+
+          font-family: 'Roboto', Arial,sans-serif;
+        }
+        .pareiguPavadinimas:hover{
+          text-transform: uppercase;
+          color: black
+        }
+        .eiti-i-skelbima, a:focus, a:active {
+          text-decoration: none;
+              }
+
+          a:hover {
+              color:black; 
+              text-decoration:none; 
+              cursor:pointer;  
+          }
+        .my-container {
+          margin-top: 20px;
+          
+          border-top: 1px solid #A9A9A9
+          
+          
+        }
+        .skelbimoImone {
+          text-transform: none;
+          color: #808080;
+          font-size: 14px;
+          font-weight: 400;
+        }
+        
+
+        .skelbimoMiestas {
+          color: black
+        }
+        .skelbimasSukurtas {
+          color: black
+        }
+        .login-form, .formSignup{
+          display: block;
+          text-align: center;
+        }
+        
+        .role{
+         width:195px;
+        -ms-box-sizing:content-box;
+        -moz-box-sizing:content-box;
+        box-sizing:content-box;
+        -webkit-box-sizing:content-box; 
+        }
+        .loginInput, .signupInput{
+          margin-bottom: 20px;
+        }
+
+        .fixOverflowAccount{
+          word-wrap: break-word;
+          width: 1fr 4fr;
+        }
+        .row.my-row-account {
+          margin-left: 20px;
+          margin-top: 20px;
+        }
+       .form-user-settings {
+        margin-bottom: 10px
+       }
+       .skelbimo-konteinerio-virsus{
+        margin-top: 50px
+       }
+        .darboPobudisSkelbimoViduje, .reikalavimaiDarbuotojuiSkelbimoViduje, .imoneSiuloSkelbimoViduje, .informacijaApieImoneSkelbimoViduje {
+          white-space: pre-wrap
+        }
+       .container-manoSkelbimas, .skelbimo-konteinerio-virsus {
+        padding-left: 5%;
+        padding-right: 25%;
+       }
+       #atlyginimasSkelbimoViduje, #atlyginimoTipasSkelbimoViduje, #miestasSkelbimoViduje, #imonesPavadinimasSkelbimoViduje{
+        font-weight: 600
+       }
+       .informacijaApieImoneSkelbimoVidujeColumn {
+        background-color: #E8E8E8
+       }
+       .daugiauImonesSkelbimu, .daugiauSkelbimuMieste {
+        text-decoration: none;
+        color: red
+       }
+       .daugiauImonesSkelbimuBold{
+        font-size: 20px
+       }
+       .skelbimoAtlyginimoTipas {
+        color: black;
+        
+        font-size: 12px
+       }
+      .skelbimoAtlyginimas {
+        color: black;
+        font-weight: 500;
+      }
+      
+          
+    title Skelbimai | #{title}
   body
+
    
 
 // HEADER
@@ -23,11 +149,11 @@ block content
 
 
 // FOOTER
-include _footer
+//- include _footer
 
 //- script(type="module" src='/js/login.js')
 //- script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js')
-
+script(src='node_modules/bootstrap/dist/js/bootstrap.bundle.js')
 script(src='/js/bundle.js')
 //- script( rc='/js/signup.js')
 

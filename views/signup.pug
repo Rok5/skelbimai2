@@ -2,29 +2,32 @@ extends base
 
 block content 
   main.main
-        form.formSignup
-          .containerSignup
-            .skiltis
-              h2.heading-secondary.ma-bt-lg Registracija
-            .skiltis
-              label  Vardas: 
-              input.inputSignup#name(type='text' name='firstname' size='15')
-            .skiltis
-              label Siūlote ar ieškote darbo? :
-              select.inputSignup#role
-                option(value='Role') 
-                option(value='ieškau darbo') Ie&scaron;kau darbo
-                option(value='siūlau darba') Si&umacr;lau darba
-            .skiltis
-              label Email:  
-                input.inputSignup#email(type='email' name='email')
-            .skiltis
-              label Slapta&zcaron;odis:  
-                input.inputSignup#pass(type='Password' name='pass')
-            .skiltis
-              label Pakartoti-Slapta&zcaron;od&iogon; :  
-                input.inputSignup#repass(type='Password' name='repass')
-            .skiltis
-                button.btnSignup.btn.btn--green Registruotis
+    .containerSignup
+      form.formSignup
+        .name.loginInput
+          label.form-label  Vardas: 
+          .sec-2
+            input.inputSignup#name(placeholder='' type='text' )
+          label.form-label  Siūlote ar ieškote darbo?
+          .sec-2
+            select.inputSignup#role.role
+              option(value='Role') 
+              option(value='ieškau darbo') Ie&scaron;kau darbo
+              option(value='siūlau darba') Si&umacr;lau darba
+       
+          label.form-label  Email:  
+          .sec-2
+            input.inputSignup#email(type='email' name='email')
+       
+          label.form-label  Slapta&zcaron;odis:  
+          .sec-2
+            input.inputSignup#pass(type='Password' name='pass')
+       
+          label.form-label  Pakartoti-Slapta&zcaron;od&iogon; :  
+          .sec-2
+            input.inputSignup#repass(type='Password' name='repass')
+       
+        button.login Registruotis
+
 
 

@@ -55,7 +55,6 @@ exports.visiDarbdaviai = catchAsync(async (req, res, next) => {
 
 exports.gautiDarbdaviPerSkelbima = catchAsync(async (req, res, next) => {
   const imone = await Skelbimai.findOne({ _id: req.params.id });
-  console.log("imones info", imone);
   // if (req.params.id) filter = { Darbdavio: req.params.id };
   const gautiDarbdavi = await Darbdavio.findOne({
     _id: imone.imonesInfo,
@@ -68,7 +67,7 @@ exports.gautiDarbdaviPerSkelbima = catchAsync(async (req, res, next) => {
   }
   res.status(201).json({
     status: "success",
-    darbdavys: gautiDarbdavi,
+    gautiDarbdavi,
   });
 });
 

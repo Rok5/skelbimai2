@@ -2,23 +2,71 @@ const Skelbimai = require("../models/skelbimuModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Darbdavio = require("../models/darbdavioModel");
-const APIFeatures = require("../utils/apiFeatures");
 
 exports.getOverview = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Skelbimai, req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  // const doc = await features.query.explain();
-  const skelbimai = await features.query;
-  // let key;
+  const keyName = req.query.key;
+  const cityName = req.query.city;
+  const sritis = req.query.sritis;
 
-  // console.log(skelbimai);
+  let filters = {};
+  if (req.query.key || req.query.city || req.query.sritis !== undefined) {
+    if (cityName.length > 0) {
+      filters = {
+        ...filters,
+        miestas: cityName,
+      };
+    }
+    if (keyName.length > 0) {
+      filters = {
+        ...filters,
+        $text: { $search: keyName },
+      };
+    }
 
-  res.status(200).render("overview", {
-    title: "Visi skelbimai",
+    if (sritis.length > 0) {
+      filters = {
+        ...filters,
+        darboSritis: sritis,
+      };
+    }
+  }
+
+  let query = Skelbimai.find(filters);
+
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const skip = (page - 1) * limit;
+  const count = await Skelbimai.count(filters);
+
+  const currentURL = req.originalUrl;
+
+  // console.log(currentURL.startsWith("/?key", "bababa"));
+  let keyURL;
+  if (currentURL.startsWith("/?key")) {
+    keyURL = true;
+  }
+
+  let url;
+  if (currentURL === "/") {
+    url = true;
+  }
+
+  const currentURLSplit = currentURL.split("&page")[0];
+
+  const skelbimai = await query.skip(skip).limit(limit);
+
+  res.status(201).render("overview", {
+    title: "Skelbimai",
     skelbimai,
+    current: page,
+    pages: Math.ceil(count / limit),
+    sritis,
+    cityName,
+    keyName,
+    filters,
+    currentURLSplit,
+    keyURL,
+    url,
   });
 });
 
@@ -53,9 +101,16 @@ exports.getAccount = catchAsync(async (req, res) => {
   });
 });
 
-exports.sukurtiSkelbima = catchAsync(async (req, res) => {
-  const [imonesInfo] = await Darbdavio.find({ user: req.user.id });
-  console.log(`imones info is viewsController`, imonesInfo);
+exports.sukurtiSkelbima = catchAsync(async (req, res, next) => {
+  const imonesInfo = await Darbdavio.findOne({ user: req.user.id });
+  if (!imonesInfo) {
+    return next(
+      new AppError(
+        "Prieš kuriant skelbimą turite pateikti informaciją apie įmonę: /darbdavioInfo"
+      )
+    );
+  }
+
   res.status(200).render("sukurtiSkelbima", {
     title: "Skelbimo kūrimas",
     imonesInfo,
@@ -63,20 +118,30 @@ exports.sukurtiSkelbima = catchAsync(async (req, res) => {
 });
 
 exports.manoSkelbimai = catchAsync(async (req, res, next) => {
-  const skelbimai = await Skelbimai.find({ user: req.user.id });
   const currentUserId = req.user.id;
+
+  let query = Skelbimai.find({ user: req.user.id });
+
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const skip = (page - 1) * limit;
+  const count = await Skelbimai.count({ user: currentUserId });
+
+  const skelbimai = await query.skip(skip).limit(limit);
 
   res.status(201).render("manoSkelbimai", {
     title: "Mano skelbimai",
     skelbimai,
     currentUserId,
+    current: page,
+    pages: Math.ceil(count / limit),
   });
 });
 
 exports.getManoSkelbima = catchAsync(async (req, res, next) => {
   const skelbimas = await Skelbimai.findOne({ _id: req.params.id });
   const currentUserId = req.user.id;
-  // const currentUserId = req.user.id;
+
   if (!skelbimas) {
     return next(new AppError("Skelbimo su tokiu id nėra", 404));
   }
@@ -91,6 +156,15 @@ exports.darbdavioInfo = catchAsync(async (req, res, next) => {
   const darbdavioInfo = await Darbdavio.findOne({ user: req.user.id });
 
   res.status(201).render("darbdavioInfo", {
+    title: "Darbdavio informacija",
+    darbdavioInfo,
+  });
+});
+
+exports.updateDarbdavi = catchAsync(async (req, res, next) => {
+  const darbdavioInfo = await Darbdavio.findOne({ user: req.user.id });
+
+  res.status(201).render("updateDarbdavioInfo", {
     title: "Darbdavio informacija",
     darbdavioInfo,
   });
@@ -122,10 +196,18 @@ exports.filtruotiSkelbimai = catchAsync(async (req, res, next) => {
     };
   }
 
-  const skelbimai = await Skelbimai.find(filters);
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const skip = (page - 1) * limit;
+  const count = await Skelbimai.count();
+
+  const skelbimai = await Skelbimai.find({ filters }).skip(skip).limit(limit);
+
   res.status(201).render("overview", {
     title: "Skelbimai",
     skelbimai,
+    current: page,
+    pages: Math.ceil(count / limit),
     sritis,
     cityName,
   });
@@ -145,5 +227,48 @@ exports.trintiSkelbima = catchAsync(async (req, res, next) => {
   res.status(201).render("manoSkelbimai", {
     title: "Mano skelbimai",
     skelbimai,
+  });
+});
+
+exports.gautiDarbdaviPerSkelbimaViews = catchAsync(async (req, res, next) => {
+  // const imone = await Skelbimai.findOne({ _id: req.params.id });
+  console.log(req.params.imonesId);
+
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const skip = (page - 1) * limit;
+
+  const gautiDarbdavi = await Darbdavio.findOne({
+    _id: req.params.imonesId,
+  })
+    .skip(skip)
+    .limit(limit)
+    .populate("skelbimai user");
+
+  const count = await Darbdavio.count({
+    _id: req.params.imonesId,
+  });
+
+  if (!gautiDarbdavi) {
+    return next(
+      new AppError(`Su šiuo id: ${req.params.imonesId} darbdavio nėra`, 404)
+    );
+  }
+  res.status(201).render("gautiDarbdavi", {
+    title: "Skelbimai",
+    gautiDarbdavi,
+    current: page,
+    pages: Math.ceil(count / limit),
+  });
+});
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  res.status(201).render("forgotPassword", {
+    title: "Pamiršau slaptažodį",
+  });
+});
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  res.status(201).render("resetPassword", {
+    title: "Atkurti slaptažodį",
   });
 });

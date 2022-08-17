@@ -1,115 +1,131 @@
 extends base 
 
 block content 
-  form.skelbimoKurimoForma
-    label(for='skelbimoPavadinimas') Skelbimo pavadinimas:
-    br
-    input#skelbimoPavadinimas(type='text' name='skelbimoPavadinimas')
-    br
-    label(for='imonesPavadinimas') Imonė:
-    br
-    input#imonesPavadinimas(type='text' name='imonesPavadinimas' value=`${imonesInfo.imonesPav}`)
-    br
-    label(for='atlyginimas') Atlyginimas:
-    br
-    input#atlyginimas(type='number' name='atlyginimas')
-    br
-    label Miestas:       
-      select#miestas(name='miestas') City:      
-        option(value='') Miestas 
-        option(value='Vilnius') Vilnius
-        option(value='Kaunas') Kaunas
-        option(value='Klaipeda') Klaipeda
-        option(value='Siauliai') Šiauliai
-        option(value='Panevezys') Panevežys
-        option(value='Akmene') Akmen&edot;
-        option(value='Alytus') Alytus
-        option(value='Anyksciai') Anyk&scaron;&ccaron;iai
-        option(value='Birstonas') Bir&scaron;tonas
-        option(value='Birzai') Bir&zcaron;ai
-        option(value='Druskininkai') Druskininkai
-        option(value='Elektrenai') Elektr&edot;nai
-        option(value='Gargzdai') Garg&zcaron;dai
-        option(value='Ignalina') Ignalina
-        option(value='Jonava') Jonava
-        option(value='Joniskis') Joni&scaron;kis
-        option(value='Jurbarkas') Jurbarkas
-        option(value='Kaisiadorys') Kai&scaron;iadorys
-        option(value='Kalvarija') Kalvarija
-        option(value='Kazlu Ruda') Kazl&uogon; R&umacr;da
-        option(value='Kedainiai') K&edot;dainiai
-        option(value='Kelme') Kelm&edot;
-        option(value='Krekenava') Krekenava
-        option(value='Kretinga') Kretinga
-        option(value='Kupiskis') Kupi&scaron;kis
-        option(value='Kursenai') Kur&scaron;&edot;nai
-        option(value='Lazdijai') Lazdijai
-        option(value='Lentvaris') Lentvaris
-        option(value='Marijampole') Marijampol&edot;
-        option(value='Mazeikiai') Ma&zcaron;eikiai
-        option(value='Moletai') Mol&edot;tai
-        option(value='Naujoji Akmene') Naujoji Akmen&edot;
-        option(value='Nemencine') Nemen&ccaron;in&edot;
-        option(value='Neringa') Neringa
-        option(value='Pabbrade') Pabrad&edot;
-        option(value='Pagegiai') Pag&edot;giai
-        option(value='Pakruojis') Pakruojis
-        option(value='Palanga') Palanga
-        option(value='Pasvalys') Pasvalys
-        option(value='Plunge') Plung&edot;
-        option(value='Prienai') Prienai
-        option(value='Radviliskis') Radvili&scaron;kis
-        option(value='Raseiniai') Raseiniai
-        option(value='Rietavas') Rietavas
-        option(value='Rokiskis') Roki&scaron;kis
-        option(value='Sakiai') &Scaron;akiai
-        option(value='Salcininkai') &Scaron;al&ccaron;ininkai
-        option(value='Silale') &Scaron;ilal&edot;
-        option(value='Silute') &Scaron;ilut&edot;
-        option(value='Sirvintos') &Scaron;irvintos
-        option(value='Skuodas') Skuodas
-        option(value='Svencionys') &Scaron;ven&ccaron;ionys
-        option(value='Taurage') Taurag&edot;
-        option(value='Telsiai') Tel&scaron;iai
-        option(value='Trakai') Trakai
-        option(value='Ukmerge') Ukmerg&edot;
-        option(value='Utena') Utena
-        option(value='Varena') Var&edot;na
-        option(value='Vievis') Vievis
-        option(value='Vilkaviskis') Vilkavi&scaron;kis
-        option(value='Visaginas') Visaginas
-        option(value='Zarasai') Zarasai    
-    br
-    label Darbo sritis :
-      select#sritis(name='sritis')  Darbo Sritis:
-        option(value='Administravimas') Administravimas/darb&uogon; sauga
-        option(value='Apsauga') Apsauga
-        option(value='Dizainas') Dizainas/architekt&umacr;ra
-        option(value='Draudimas') Draudimas
-        option(value='Eksportas') Eksportas
-        option(value='Energetika') Energetika/elektronika
-        option(value='Finansai') Finansai/apskaita/bankininkyst&edot;
-        option(value='Gamyba') Gamyba
-        option(value='IT') Informacin&edot;s technologijos
-        option(value='Inzinerija') In&zcaron;inerija/mechanika
-        option(value='KlientuAptarnavimas') Klient&uogon; aptarnavimas/paslaugos
-        option(value='MaistoGamyba') Maisto gamyba
-        option(value='Marketingas') Marketingas/reklama
-        option(value='Medicina') Medicina/farmacija
-        option(value='NekilnojamasTuras') Nekilnojamasis turtas
-        option(value='Pardavimai') Pardavim&uogon; vadyba
-        option(value='PersonaloValdymas') Personalo valdymas
-        option(value='Pirkimai') Pirkimai/tiekimas
-        option(value='Prekya') Prekyba - konsultavimas
-        option(value='Sandeliavimas') Sand&edot;liavimas
-        option(value='Statyba') Statyba
-        option(value='Svietimas') &Scaron;vietimas/mokymai/kult&umacr;ra
-        option(value='Teise') Teis&edot;
-        option(value='TransportoVairavimas') Transporto vairavimas
-        option(value='Logistika') Transporto/logistikos vadyba
-        option(value='VadovavimasKokybesVadyba') Vadovavimas/kokyb&edot;s vadyba
-        option(value='ValstybesTarnyba') Valstyb&edot;s tarnyba
-        option(value='ZemesUkis') &Zcaron;em&edot;s &umacr;kis
-        option(value='Ziniasklaida') &Zcaron;iniasklaida/komunikacija
-    br
-    input(type='submit' value='Submit')
+  .container-md
+    form.skelbimoKurimoForma
+      .form-group
+        label(for='pareiguPavadinimas') Pareigų pavadinimas - nurodyti būtina
+        textarea#pareiguPavadinimas.form-control(rows='2')
+      .form-group
+        label(for='imonesPavadinimas') Imonės pavadinimas - nurodyti būtina
+        input#imonesPavadinimas.form-control(type='text' value=`${imonesInfo.imonesPav}`)
+      .form-group
+        label(for='atlyginimas') Atlyginimas
+        input#atlyginimas.form-control(type='number')
+      .form-group
+        label(for='atlyginimoTipas') Atlyginimo tipas
+        select#atlyginimoTipas.form-control(name='atlyginimoTipas')
+          option(value='bruto') Bruto - neatskaičius mokesčių
+          option(value='neto') Neto - atskaičius mokesčius
+      .form-group
+        label(for='miestas') Miestas
+        select#miestas.form-control(name='miestas')      
+          option(value='') Miestas 
+          option(value='Vilnius') Vilnius
+          option(value='Kaunas') Kaunas
+          option(value='Klaipėda') Klaipėda
+          option(value='Šiauliai') Šiauliai
+          option(value='Panevezys') Panevežys
+          option(value='Akmenė') Akmen&edot;
+          option(value='Alytus') Alytus
+          option(value='Anykščiai') Anyk&scaron;&ccaron;iai
+          option(value='Birštonas') Bir&scaron;tonas
+          option(value='Biržai') Bir&zcaron;ai
+          option(value='Druskininkai') Druskininkai
+          option(value='Elektrenai') Elektr&edot;nai
+          option(value='Gargždai') Garg&zcaron;dai
+          option(value='Ignalina') Ignalina
+          option(value='Jonava') Jonava
+          option(value='Joniškis') Joni&scaron;kis
+          option(value='Jurbarkas') Jurbarkas
+          option(value='Kaišiadorys') Kai&scaron;iadorys
+          option(value='Kalvarija') Kalvarija
+          option(value='Kazlų Rūda') Kazl&uogon; R&umacr;da
+          option(value='Kėdainiai') K&edot;dainiai
+          option(value='Kelmė') Kelm&edot;
+          option(value='Krekenava') Krekenava
+          option(value='Kretinga') Kretinga
+          option(value='Kupiškis') Kupi&scaron;kis
+          option(value='Kuršenai') Kur&scaron;&edot;nai
+          option(value='Lazdijai') Lazdijai
+          option(value='Lentvaris') Lentvaris
+          option(value='Marijampolė') Marijampol&edot;
+          option(value='Mažeikiai') Ma&zcaron;eikiai
+          option(value='Molėtai') Mol&edot;tai
+          option(value='Naujoji Akmenė') Naujoji Akmen&edot;
+          option(value='Nemenčinė') Nemen&ccaron;in&edot;
+          option(value='Neringa') Neringa
+          option(value='Pabradė') Pabrad&edot;
+          option(value='Pagėgiai') Pag&edot;giai
+          option(value='Pakruojis') Pakruojis
+          option(value='Palanga') Palanga
+          option(value='Pasvalys') Pasvalys
+          option(value='Plungė') Plung&edot;
+          option(value='Prienai') Prienai
+          option(value='Radviliškis') Radvili&scaron;kis
+          option(value='Raseiniai') Raseiniai
+          option(value='Rietavas') Rietavas
+          option(value='Rokiškis') Roki&scaron;kis
+          option(value='Šakiai') &Scaron;akiai
+          option(value='Šalčininkai') &Scaron;al&ccaron;ininkai
+          option(value='Šilalė') &Scaron;ilal&edot;
+          option(value='Šilutė') &Scaron;ilut&edot;
+          option(value='Širvintos') &Scaron;irvintos
+          option(value='Skuodas') Skuodas
+          option(value='Švencionys') &Scaron;ven&ccaron;ionys
+          option(value='Tauragė') Taurag&edot;
+          option(value='Telšiai') Tel&scaron;iai
+          option(value='Trakai') Trakai
+          option(value='Ukmergė') Ukmerg&edot;
+          option(value='Utena') Utena
+          option(value='Varėna') Var&edot;na
+          option(value='Vievis') Vievis
+          option(value='Vilkaviškis') Vilkavi&scaron;kis
+          option(value='Visaginas') Visaginas
+          option(value='Zarasai') Zarasai    
+      .form-group
+        label Darbo sritis :
+        select#sritis.form-control(name='sritis')  Darbo Sritis:
+          option(value='Administravimas') Administravimas/darb&uogon; sauga
+          option(value='Apsauga') Apsauga
+          option(value='Dizainas') Dizainas/architekt&umacr;ra
+          option(value='Draudimas') Draudimas
+          option(value='Eksportas') Eksportas
+          option(value='Energetika') Energetika/elektronika
+          option(value='Finansai') Finansai/apskaita/bankininkyst&edot;
+          option(value='Gamyba') Gamyba
+          option(value='IT') Informacin&edot;s technologijos
+          option(value='Inzinerija') In&zcaron;inerija/mechanika
+          option(value='KlientuAptarnavimas') Klient&uogon; aptarnavimas/paslaugos
+          option(value='MaistoGamyba') Maisto gamyba
+          option(value='Marketingas') Marketingas/reklama
+          option(value='Medicina') Medicina/farmacija
+          option(value='NekilnojamasTuras') Nekilnojamasis turtas
+          option(value='Pardavimai') Pardavim&uogon; vadyba
+          option(value='PersonaloValdymas') Personalo valdymas
+          option(value='Pirkimai') Pirkimai/tiekimas
+          option(value='Prekya') Prekyba - konsultavimas
+          option(value='Sandeliavimas') Sand&edot;liavimas
+          option(value='Statyba') Statyba
+          option(value='Svietimas') &Scaron;vietimas/mokymai/kult&umacr;ra
+          option(value='Teise') Teis&edot;
+          option(value='TransportoVairavimas') Transporto vairavimas
+          option(value='Logistika') Transporto/logistikos vadyba
+          option(value='VadovavimasKokybesVadyba') Vadovavimas/kokyb&edot;s vadyba
+          option(value='ValstybesTarnyba') Valstyb&edot;s tarnyba
+          option(value='ZemesUkis') &Zcaron;em&edot;s &umacr;kis
+          option(value='Ziniasklaida') &Zcaron;iniasklaida/komunikacija
+      .form-group
+        label(for='darboPobudis') Darbo pobūdis - nurodyti būtina
+        textarea#darboPobudis.form-control(rows='3')
+      .form-group
+        label(for='imoneSiulo') Įmonė siūlo - nurodyti nebūtina
+        textarea#imoneSiulo.form-control(rows='3')
+      .form-group
+        label(for='reikalavimaiDarbuotojui') Reikalavimui darbuotojui - nurodyti būtina
+        textarea#reikalavimaiDarbuotojui.form-control(rows='3')
+      .form-group
+        label(for='informacijaApieImone') Informacija apie įmonę - nurodyti būtina
+        textarea#informacijaApieImone.form-control(rows='3')
+    
+        input(type='submit' value='Submit')

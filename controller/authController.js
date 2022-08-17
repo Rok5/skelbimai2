@@ -177,7 +177,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   const resetURL = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/users/resetPassword/${resetToken}`;
+  )}/resetPassword/${resetToken}`;
   const message = `Pamiršote slaptažodį? Paspauskite šia nuorodą ir susikurkite nauja: ${resetURL} \n Jei nepamiršote slaptažodžio, ignoruokite šį laišką`;
   try {
     await sendEmail({
@@ -193,6 +193,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
+    console.log(err);
     return next(
       new AppError("Įvyko klaida siunčiant email, pabandykite vėliau", 500)
     );

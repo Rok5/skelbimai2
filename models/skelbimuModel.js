@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
+// mongoosePaginate.paginate.options = {
+//   limit: 3, // how many records on each page
+// };
 
 const skelbimuSchema = new mongoose.Schema(
   {
-    pavadinimas: {
-      unique: true,
+    pareiguPavadinimas: {
       type: String,
-      required: [true, "Įvesti skelbimo pavadinimą"],
+      required: [true, "Įvesti pareigų pavadinimą"],
       minLength: [
         5,
-        "Minimalus skelbimo pavadinimas turi sudaryti bent 5 simbolius",
+        "Minimalus pareigų pavadinimas turi sudaryti bent 5 simbolius",
       ],
-      maxlength: [
-        100,
-        "Maksimalus skelbimo pavadinimas gali būti 100 simbolių",
-      ],
+      maxlength: [110, "Maksimalus pareigų pavadinimas gali būti 110 simbolių"],
     },
     imone: {
       type: String,
@@ -23,6 +23,14 @@ const skelbimuSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Prašome įvesti siūloma atlyginimą prieš mokesčius"],
     },
+    atlyginimoTipas: {
+      type: String,
+      enum: ["bruto", "neto"],
+      required: [
+        true,
+        "Prašome pasirinkti ar nurodytas atlyginimas yra brtuo ar neto",
+      ],
+    },
     miestas: {
       type: String,
       required: [true, "Prašome įvesti miestą kuriame siūlote darbą"],
@@ -30,6 +38,21 @@ const skelbimuSchema = new mongoose.Schema(
     darboSritis: {
       type: String,
       required: [true, "Prašome pasirinkti darbo sritį"],
+    },
+    darboPobudis: {
+      type: String,
+      required: [true, "Prašome aprašyti darbo pobūdį"],
+    },
+    reikalavimaiDarbuotojui: {
+      type: String,
+      required: [true, "Prašome nurodyti reikalavimus darbuotojui"],
+    },
+    imoneSiulo: {
+      type: String,
+    },
+    informacijaApieImone: {
+      type: String,
+      required: [true, "Prašome nurodyti jūsų įmonės aprašymą"],
     },
 
     createdAt: {
@@ -70,7 +93,10 @@ const skelbimuSchema = new mongoose.Schema(
 skelbimuSchema.set("toObject", { virtuals: true });
 skelbimuSchema.set("toJSON", { virtuals: true });
 
+skelbimuSchema.plugin(mongoosePaginate);
+
 const Skelbimai = mongoose.model("Skelbimai", skelbimuSchema);
+
 module.exports = Skelbimai;
 
 // Skelbime turi matytis imones pav pagal id.

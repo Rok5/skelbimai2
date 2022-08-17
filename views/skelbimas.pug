@@ -2,12 +2,47 @@ extends base
 
 block content 
   main.main
+    .container-md.skelbimo-konteinerio-virsus
+      h4#pareiguPavadinimasSkelbimoViduje= skelbimas.pareiguPavadinimas
+      .row
+        .col
+          span#atlyginimasSkelbimoViduje= `${skelbimas.atlyginimas} €/mėn `
+          -if(skelbimas.atlyginimoTipas === 'bruto')
+              span#atlyginimoTipasSkelbimoViduje - Neatskaičius mokesčių
+              style(type='text/css').
+                #atlyginimasSkelbimoViduje{
+                  color: orange
+                }
+          -if(skelbimas.atlyginimoTipas === 'neto' )
+              span#atlyginimoTipasSkelbimoViduje  - Atskaičius mokesčius
+              style(type='text/css').
+                #atlyginimasSkelbimoViduje{
+                  color: #66FF99
+                }
+          .col.col-tarpas
+            a#miestasSkelbimoViduje.daugiauSkelbimuMieste(href=`/?key=&city=${skelbimas.miestas}&sritis=`)= `${skelbimas.miestas} `
+            span#imonesPavadinimasSkelbimoViduje= `- ${skelbimas.imone}`
+        
+
+        
+        //- span#info= skelbimas.imonesInfo
+      .dd-flex.flex-column.bd-highlight.mb-3
+        h5.p-2.bd-highlight Darbo pobūdis
+        .p-2.bd-highlight.darboPobudisSkelbimoViduje=skelbimas.darboPobudis
+        h5.p-2.bd-highlight Reikalavimai darbuotojui
+        .p-2.bd-highlight.reikalavimaiDarbuotojuiSkelbimoViduje=skelbimas.reikalavimaiDarbuotojui
+        -if (skelbimas.imoneSiulo)
+          h5.p-2.bd-highlight Imonė siūlo
+          .p-2.bd-highlight.imoneSiuloSkelbimoViduje=skelbimas.imoneSiulo
+      .d-flex.flex-column.bd-highlight.mb-3.informacijaApieImoneSkelbimoVidujeColumn
+        a.p-2.bd-highlight.daugiauImonesSkelbimu.daugiauImonesSkelbimuBold(href=`/darbdavys/${skelbimas.imonesInfo}` method='GET')=`${skelbimas.imone}`
+        //- a.eiti-i-skelbima(href=`/skelbimas/${skelbimas.id}/darbdavys` method='GET')
+        .p-2.bd-highlight.informacijaApieImoneSkelbimoViduje=skelbimas.informacijaApieImone
+        //- a.p-2.bd-highlight.daugiauImonesSkelbimu(href=`/skelbimas/${skelbimas.id}/darbdavys` method='GET') Žiūrėti daugiau šios įmonės skelbimų
+        a.p-2.bd-highlight.daugiauImonesSkelbimu(href=`/darbdavys/${skelbimas.imonesInfo}` method='GET') Žiūrėti daugiau šios įmonės skelbimų
+
+
     
- 
-    span#pavadinimas= skelbimas.pavadinimas
-    //- span#info= skelbimas.imonesInfo
-    span= skelbimas.user
-    br
-    br
+   
 
     

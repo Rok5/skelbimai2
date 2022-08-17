@@ -1,0 +1,48 @@
+extends base 
+
+
+
+block content 
+  each skelbimas in gautiDarbdavi.skelbimai
+    .container.my-container
+        a.eiti-i-skelbima(href=`/skelbimas/${skelbimas.id}`)
+          .row.my-row
+            .col-md-6.border-offset-md-1.my-col.fixOverflow.pareiguPavadinimas= skelbimas.pareiguPavadinimas
+              .col-md-8.my-col.fixOverflow.skelbimoImone= skelbimas.imone
+
+            .col-md-2.my-col.fixOverflow.skelbimoAtlyginimas= `${skelbimas.atlyginimas} €`
+
+              -if(skelbimas.atlyginimoTipas === 'bruto')
+                //- style(type='text/css').
+                //-   .skelbimoAtlyginimas{
+                //-   color: #FF9966
+                //-     }
+                .skelbimoAtlyginimoTipas Neatskaičius mokesčių
+
+              -if(skelbimas.atlyginimoTipas === 'neto')
+                //- style(type='text/css').
+                //-   .skelbimoAtlyginimas{
+                //-   color: #66FF99;
+
+                //-     }
+                .skelbimoAtlyginimoTipas Atskaičius mokesčius
+
+              .col-md-2.my-col.fixOverflow.skelbimoAtlyginimoTipas
+
+            .col-md-2.my-col.fixOverflow.skelbimoMiestas= skelbimas.miestas
+
+            .col-md-2.my-col.fixOverflow.skelbimasSukurtas= skelbimas.createdAt
+
+  //- div.d-flex.justify-content-center
+  //-     .row.g-3
+  //-       if current > 1
+  //-         .col
+  //-           a(href=`?page=${parseInt(current) - 1}`) <<
+  //-           //- a(href=`?page=${parseInt(current) - 1}`) Previous
+  //-       - let i = 1
+  //-       while i <= pages
+  //-         .col
+  //-           a(href=`?page=${i}`)= i++
+  //-       if current < pages
+  //-         .col
+  //-           a(href=`?page=${parseInt(current) + 1}`) >>
