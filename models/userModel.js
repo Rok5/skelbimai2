@@ -92,7 +92,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
       this.passwordChangedAt.getTime() / 1000,
       10
     );
-    console.log(this.passwordChangedAt, JWTTimestamp);
+    // console.log(this.passwordChangedAt, JWTTimestamp);
     return JWTTimestamp < changedTimestamp;
   }
   return false;
@@ -107,9 +107,9 @@ userSchema.methods.createPasswordResetToken = function () {
     .digest("hex");
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  console.log(
-    `siusim emailu: ${resetToken}, hashintas DB: ${this.passwordResetToken}`
-  );
+  // console.log(
+  //   `siusim emailu: ${resetToken}, hashintas DB: ${this.passwordResetToken}`
+  // );
   return resetToken;
 };
 

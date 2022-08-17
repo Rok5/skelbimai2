@@ -103,7 +103,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   // 2) tokeno verifikacija, ar nepakites
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded);
+  // console.log(decoded);
   // 3) paziureti ar useris dar egzistuoja
 
   const freshUser = await User.findById(decoded.id);
@@ -193,7 +193,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
-    console.log(err);
+    // console.log(err);
     return next(
       new AppError("Įvyko klaida siunčiant email, pabandykite vėliau", 500)
     );
@@ -210,7 +210,7 @@ exports.resetPassowrd = catchAsync(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-  console.log(hashedToken);
+  // console.log(hashedToken);
 
   const user = await User.findOne({
     passwordResetToken: hashedToken,

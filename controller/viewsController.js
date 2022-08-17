@@ -232,7 +232,7 @@ exports.trintiSkelbima = catchAsync(async (req, res, next) => {
 
 exports.gautiDarbdaviPerSkelbimaViews = catchAsync(async (req, res, next) => {
   // const imone = await Skelbimai.findOne({ _id: req.params.id });
-  console.log(req.params.imonesId);
+  // console.log(req.params.imonesId);
 
   const page = req.query.page * 1 || 1;
   const limit = req.query.limit * 1 || 10;

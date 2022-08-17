@@ -106,7 +106,7 @@ exports.updateDarbdavi = catchAsync(async (req, res, next) => {
   );
 
   const findUser = await Darbdavio.findOne({ user: req.user.id });
-  console.log(findUser);
+  // console.log(findUser);
   const updatedUser = await Darbdavio.findByIdAndUpdate(
     findUser,
     filteredBody,

@@ -6,7 +6,7 @@ export const userSettings = async (email, name) => {
   try {
     const res = await axios({
       method: "PATCH",
-      url: "http://127.0.0.1:8000/api/v1/users/updateMe",
+      url: "/api/v1/users/updateMe",
       data: {
         email,
         name,
@@ -43,7 +43,7 @@ export const updatePassword = async (
       showAlert("success", "Updated");
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     showAlert("error", err.response.data.message);
   }
 };

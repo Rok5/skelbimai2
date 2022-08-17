@@ -13,7 +13,7 @@ const handleDuplicateFields = (err) => {
   const keyVal = err.keyValue;
   const mess = keyVal[Object.keys(keyVal)];
   const message = `Duplikatas, prašome įrašyti kitą pavadinimą: ${mess}`;
-  console.log(err.keyValue);
+  // console.log(err.keyValue);
   return new AppError(message, 401);
 };
 

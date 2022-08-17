@@ -36,12 +36,12 @@ if (resetPasswordForm)
     const password = document.getElementById("password").value;
     const passwordConfirm = document.getElementById("passwordConfirm").value;
     const currentURL = document.URL;
-    console.log(currentURL, "currentURL is index");
+    // console.log(currentURL, "currentURL is index");
     const currentURLApi = currentURL.replace(
-      "http://127.0.0.1:8000/resetPassword/",
-      "http://127.0.0.1:8000/api/v1/users/resetPassword/"
+      "/resetPassword/",
+      "/api/v1/users/resetPassword/"
     );
-    console.log(currentURLApi);
+    // console.log(currentURLApi);
     resetPassword(password, passwordConfirm, currentURLApi);
   });
 
@@ -49,7 +49,7 @@ if (trintiSkelbima)
   trintiSkelbima.addEventListener("click", (e) => {
     e.preventDefault();
     const skelbimoId = document.getElementById("skelbimas");
-    console.log(skelbimoId, "is index.js");
+    // console.log(skelbimoId, "is index.js");
 
     istrintiSkelbima(skelbimoId);
   });
@@ -119,7 +119,7 @@ if (sukurtiSkelbimaForma)
     ).value;
     const darboPobudis = document.getElementById("darboPobudis").value;
     const atlyginimoTipas = document.getElementById("atlyginimoTipas").value;
-    console.log(pareiguPavadinimas);
+    // console.log(pareiguPavadinimas);
     sukurtiSkelbima(
       pareiguPavadinimas,
       imonesPavadinimas,
@@ -141,14 +141,14 @@ if (sukurtiImonesInfoForma)
     const imonesPav = document.getElementById("imonesPavadinimas").value;
     const imonesKodas = document.getElementById("imonesKodas").value;
     const kontaktinisAsmuo = document.getElementById("kontaktinisAsmuo").value;
-    console.log(
-      "pavadinimas: ",
-      imonesPav,
-      "imones kodas ",
-      imonesKodas,
-      "kontaktinis asmuo ",
-      kontaktinisAsmuo
-    );
+    // // console.log(
+    //   "pavadinimas: ",
+    //   imonesPav,
+    //   "imones kodas ",
+    //   imonesKodas,
+    //   "kontaktinis asmuo ",
+    //   kontaktinisAsmuo
+    // );
     imonesInfo(imonesPav, imonesKodas, kontaktinisAsmuo);
   });
 
@@ -161,13 +161,13 @@ if (updateImonesInfoForma)
     const kontaktinisAsmuo = document.getElementById(
       "kontaktinisAsmuoUpdate"
     ).value;
-    console.log(
-      "pavadinimas: ",
-      imonesPav,
-      "imones kodas ",
-      imonesKodas,
-      "kontaktinis asmuo ",
-      kontaktinisAsmuo
-    );
+    // console.log(
+    //   "pavadinimas: ",
+    //   imonesPav,
+    //   "imones kodas ",
+    //   imonesKodas,
+    //   "kontaktinis asmuo ",
+    //   kontaktinisAsmuo
+    // );
     updateImonesInfo(imonesPav, imonesKodas, kontaktinisAsmuo);
   });
