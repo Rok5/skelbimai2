@@ -31,7 +31,7 @@ export const updateImonesInfo = async (
     // console.log(imonesPav, imonesKodas, kontaktinisAsmuo, "funkc");
     const res = await axios({
       method: "PATCH",
-      url: "http://127.0.0.1:8000/api/v1/darbdavioInfo",
+      url: "/api/v1/darbdavioInfo",
       data: {
         imonesPav,
         imonesKodas,

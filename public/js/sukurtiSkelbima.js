@@ -51,7 +51,7 @@ export const istrintiSkelbima = async (skelbimoId) => {
 
     const res = await axios({
       method: "DELETE",
-      url: `http://127.0.0.1:8000/api/v1/skelbimai/${regexDone}`,
+      url: `/api/v1/skelbimai/${regexDone}`,
       data: {},
     });
     if (res.data.status === "success") {
