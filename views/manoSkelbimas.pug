@@ -37,9 +37,9 @@ block content
           h5.p-2.bd-highlight Imonė siūlo
           .p-2.bd-highlight.imoneSiuloSkelbimoViduje=skelbimas.imoneSiulo
       .d-flex.flex-column.bd-highlight.mb-3.informacijaApieImoneSkelbimoVidujeColumn
-        a.p-2.bd-highlight.daugiauImonesSkelbimu.daugiauImonesSkelbimuBold(href=`/darbdavys/${skelbimas.id}` method='GET')=`${skelbimas.imone}`
+        a.p-2.bd-highlight.daugiauImonesSkelbimu.daugiauImonesSkelbimuBold(href=`/darbdavys/${skelbimas.imonesInfo}` method='GET')=`${skelbimas.imone}`
         .p-2.bd-highlight.informacijaApieImoneSkelbimoViduje=skelbimas.informacijaApieImone
-        a.p-2.bd-highlight.daugiauImonesSkelbimu(href=`/darbdavys/${skelbimas.id}` method='GET') Žiūrėti daugiau šios įmonės skelbimų
+        a.p-2.bd-highlight.daugiauImonesSkelbimu(href=`/darbdavys/${skelbimas.imonesInfo}` method='GET') Žiūrėti daugiau šios įmonės skelbimų
 
 
     - if (currentUserId===skelbimas.user)
