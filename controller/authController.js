@@ -10,7 +10,7 @@ const Skelbimai = require("../models/skelbimuModel");
 const Darbdavio = require("../models/darbdavioModel");
 
 const signToken = (id) => {
-  return jwt.sign({ id: id }, process.env.JWT_Secret, {
+  return jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
