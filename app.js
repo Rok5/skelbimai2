@@ -9,6 +9,7 @@ const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const compression = require("compression");
+const cors = require("cors");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
@@ -26,6 +27,11 @@ app.set("views", path.join(__dirname, "views"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, `public`)));
+
+app.use(cors());
+
+app.options("*", cors());
+
 app.use(helmet());
 const scriptSrcUrls = [
   "https://api.tiles.mapbox.com/",
