@@ -56,17 +56,16 @@ exports.login = catchAsync(async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  // 1) ar email ir pw egzistuoja
   if (!email || !password) {
     return next(new AppError("Prašome įvesti email ir slaptažodį", 400));
   }
-  // 2) ar useris egzistuoja ir pw teisingas
+ 
   const user = await User.findOne({ email: email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Neteisingas email arba slaptažodis", 401));
   }
-  // 3) jei viskas ok, siusti token useriui
+  
   createSendToken(user, 200, req, res);
 });
 
@@ -81,15 +80,6 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // Protect esme paziureti ar useris prisijumges. Tai darom tikrindami jwt tokena,
-  // kuri issiuntem login arba signup metu.
-  // Patikrinam ir yra headeriai, jei yra splitinam Authorization headeri
-  // ir paimam antra dali, Bearer ismetam.
-  // 2) ziurim ar tokenas nebuvo modifikuotas su jwt.verify
-  // errorControleryje kuriam nauja klaidos pranesima, JsonWebTokenError kladai
-  // ja gaunam jei jwt pasibaiges arba buvo modifikuotas.
-
-  // 1) gauti tokena ar jis egzistuoja
   let token;
   if (
     req.headers.authorization &&
@@ -102,17 +92,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token) {
     return next(new AppError("Jūs esate neprisijungęs", 401));
   }
-  // 2) tokeno verifikacija, ar nepakites
+  
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   // console.log(decoded);
-  // 3) paziureti ar useris dar egzistuoja
+ 
 
   const freshUser = await User.findById(decoded.id);
-  // decoded susideda is id ir secret word, del to per decoded galim prieiti prie id
+  
   if (!freshUser) {
     return next(new AppError("Vartotojas su tokiu token neegzistuoja", 401));
   }
-  // 4) paiureti ar useris keite pw, po to kai buvo isduotas tokenas
+  
   if (freshUser.changedPasswordAfter(decoded.iat)) {
     return next(
       new AppError(
@@ -127,24 +117,23 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.isLogedIn = async (req, res, next) => {
-  // 1) gauti tokena ar jis egzistuoja
+ 
   if (req.cookies.jwt) {
     try {
-      // 2) tokeno verifikacija, ar nepakites
+      
       const decoded = await promisify(jwt.verify)(
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
 
-      // 3) paziureti ar useris dar egzistuoja
 
       const freshUser = await User.findById(decoded.id);
 
-      // decoded susideda is id ir secret word, del to per decoded galim prieiti prie id
+     
       if (!freshUser) {
         next();
       }
-      // 4) paiureti ar useris keite pw, po to kai buvo isduotas tokenas
+    
       if (freshUser.changedPasswordAfter(decoded.iat)) {
         return next();
       }
@@ -202,22 +191,17 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.resetPassowrd = catchAsync(async (req, res, next) => {
-  // 1. Gauti user pagal token.
-  // Kadangi gaunam resetToken nehashinta, pirmiausia ji hashinam
-  // Pagal naujai hashinta tokena, DB ieskom passwordResetToken, ar musu
-  // naujai hashintas tokenas sutampa su kazkuriuo useriu. Tikrinam ar passwordResetExpires
-  // yra didesnis uz dabarini laika.
+
   const hashedToken = crypto
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-  // console.log(hashedToken);
 
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  // 2. Jei token nepasibaiges ir useris egzistuoja, sukurti nauja pw
+ 
   if (!user) {
     return next(
       new AppError(
@@ -237,31 +221,29 @@ exports.resetPassowrd = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-  // 1) Gauti useri is kolekcijos
+ 
   const user = await User.findById(req.user.id).select("password");
-  // 2) paziureti ar ivestas pw teisingas
+  
   if (
     !user ||
     !(await user.correctPassword(req.body.currentPassword, user.password))
   ) {
     return next(new AppError("Neteisingas slaptažodis"), 401);
   }
-  // 3) jei pw teisingas, updatinti pw
+  
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  // 4) priloginti useri
+
   await user.save();
   createSendToken(user, 200, req, res);
 });
 
 exports.protectDoc = catchAsync(async (req, res, next) => {
-  // Ar trina skelbima tas useris kuris ji ir sukure
+ 
   const skelbimas = await Skelbimai.find({ _id: req.params.id });
-  // console.log("skelbimas", skelbimas);
+  
   const userIdIsSkelbimo = skelbimas[0].user;
-  // console.log(userIdIsSkelbimo, "user id is skelbimo");
 
-  // console.log(req.user.id, "user id");
 
   if (userIdIsSkelbimo !== req.user.id) {
     return next(
