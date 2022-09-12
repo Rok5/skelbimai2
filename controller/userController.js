@@ -27,35 +27,6 @@ exports.visiUseriai = catchAsync(async (req, res, next) => {
   });
 });
 
-// exports.updateMe = catchAsync(async (req, res, next) => {
-//   // 1) Sukurti error, jei useris postina password ar passwordConfrim
-
-//   if (req.body.password || req.body.passwordConfirm) {
-//     return next(
-//       new AppError(
-//         "Ši skilts neskirta slaptažodžio atnaujinimui, prašome naudotis: /updatePassword",
-//         400
-//       )
-//     );
-//   }
-
-//   // 2) Updatinti userio dokumenta
-//   // if req.user.role = ieskau darbo
-//   const filteredBody = filterObj(req.body, "logInName", "email");
-//   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-//     new: true,
-//     runValidators: true,
-//   });
-
-//   // if req.user.role = siulau darba updatinti daugiau lauku
-
-//   res.status(200).json({
-//     status: "success",
-//     data: {
-//       user: updatedUser,
-//     },
-//   });
-// });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
