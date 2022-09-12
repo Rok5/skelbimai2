@@ -67,14 +67,12 @@ const skelbimuSchema = new mongoose.Schema(
       )
         .toString()
         .replace(/(^|\D)(\d)(?!\d)/g, "$10$2"),
-      // type String, nes jei butu Date, tai prisidetu ir laikas + neleidzia renderinti useriui
-      //
     },
 
     // toJSON: { virtuals: true },
-    // Kai duomenys yra outputinami kaip JSON
+    
     // toObject: { virtuals: true },
-    // kai duomenys yra outputinami kaip objektas
+    /
     user: {
       type: "string",
       // required: "true",
@@ -98,6 +96,3 @@ skelbimuSchema.plugin(mongoosePaginate);
 const Skelbimai = mongoose.model("Skelbimai", skelbimuSchema);
 
 module.exports = Skelbimai;
-
-// Skelbime turi matytis imones pav pagal id.
-// imones profili turi matytis kokius skelbimus turi sukurtus
